@@ -15,5 +15,5 @@ def handle_event():
         if data['token'] != app.config('VERIFICATION_TOKEN'):
             return Response(status=403)
         if data.get('type','') == 'url_verification':
-            return Response(status=200, {"challenge": data['challenge']})
+            return {"challenge": data['challenge']}
     return Response(status=500)
