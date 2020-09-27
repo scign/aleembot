@@ -1,6 +1,8 @@
 gunicorn
 flask
 requests
+slackclient
+slackeventsapi
 #numpy
 #pandas
 #spacy

@@ -1,19 +1,14 @@
 # Author: Aleem Juma
 
-from flask import render_template, request, Response
-from app import app
+from flask import render_template, request, jsonify
+from app import app, slack_events_adapter
 from threading import Thread
 
 @app.route('/') 
 def home(): 
     return '<h1>Working!</h1>'
 
-@app.route('/slack/events')
-def handle_event():
-    try:
-        data = request.json
-        if data['token'] != app.config('VERIFICATION_TOKEN'):
-            return Response(status=403)
-        if data.get('type','') == 'url_verification':
-            return {"challenge": data['challenge']}
-    return Response(status=500)
+@slack_events_adapter.on('message')
+def message(payload):
+    event = payload.get('event', {})
+    print(event)
