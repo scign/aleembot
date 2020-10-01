@@ -26,11 +26,22 @@ def new_thread(target, **kwargs):
 
 @slack_events_adapter.on('pin_added')
 def newpin(payload):
-    pass
+    event = payload.get('event',{})
+    new_thread(
+        target=slackops.new_pin,
+        channel=event.get('channel',''),
+        item=event.get('item', {})
+    )
 
 @slack_events_adapter.on('app_mention')
 def mention(payload):
-    pass
+    event = payload.get('event',{})
+    new_thread(
+        target=slackops.mention,
+        channel=event.get('channel', ''),
+        user=event.get('user', ''),
+        text=event.get('text', '')
+    )
 
 @slack_events_adapter.on('message')
 def message(payload):
